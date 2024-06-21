@@ -17,6 +17,10 @@ import { ProductList } from "./product/ProductList";
 import { ProductCreate } from "./product/ProductCreate";
 import { ProductEdit } from "./product/ProductEdit";
 import { ProductShow } from "./product/ProductShow";
+import { GrtgbeList } from "./grtgbe/GrtgbeList";
+import { GrtgbeCreate } from "./grtgbe/GrtgbeCreate";
+import { GrtgbeEdit } from "./grtgbe/GrtgbeEdit";
+import { GrtgbeShow } from "./grtgbe/GrtgbeShow";
 import { jwtAuthProvider } from "./auth-provider/ra-auth-jwt";
 
 const App = (): React.ReactElement => {
@@ -63,6 +67,13 @@ const App = (): React.ReactElement => {
           edit={ProductEdit}
           create={ProductCreate}
           show={ProductShow}
+        />
+        <Resource
+          name="Grtgbe"
+          list={GrtgbeList}
+          edit={GrtgbeEdit}
+          create={GrtgbeCreate}
+          show={GrtgbeShow}
         />
       </Admin>
     </div>
