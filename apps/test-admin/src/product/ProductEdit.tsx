@@ -1,11 +1,20 @@
 import * as React from "react";
-import { Edit, SimpleForm, EditProps } from "react-admin";
+import {
+  Edit,
+  SimpleForm,
+  EditProps,
+  ReferenceInput,
+  SelectInput,
+} from "react-admin";
+import { OrderTitle } from "../order/OrderTitle";
 
 export const ProductEdit = (props: EditProps): React.ReactElement => {
   return (
     <Edit {...props}>
       <SimpleForm>
-        <div />
+        <ReferenceInput source="order.id" reference="Order" label="order">
+          <SelectInput optionText={OrderTitle} />
+        </ReferenceInput>
       </SimpleForm>
     </Edit>
   );

@@ -1,1 +1,5 @@
-export type OrderUpdateInput = {};
+import { ProductUpdateManyWithoutOrdersInput } from "./ProductUpdateManyWithoutOrdersInput";
+
+export type OrderUpdateInput = {
+  products?: ProductUpdateManyWithoutOrdersInput;
+};

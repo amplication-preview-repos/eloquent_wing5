@@ -17,7 +17,11 @@ import { Order } from "./Order";
 import { OrderCountArgs } from "./OrderCountArgs";
 import { OrderFindManyArgs } from "./OrderFindManyArgs";
 import { OrderFindUniqueArgs } from "./OrderFindUniqueArgs";
+import { CreateOrderArgs } from "./CreateOrderArgs";
+import { UpdateOrderArgs } from "./UpdateOrderArgs";
 import { DeleteOrderArgs } from "./DeleteOrderArgs";
+import { ProductFindManyArgs } from "../../product/base/ProductFindManyArgs";
+import { Product } from "../../product/base/Product";
 import { OrderService } from "../order.service";
 @graphql.Resolver(() => Order)
 export class OrderResolverBase {
@@ -49,6 +53,33 @@ export class OrderResolverBase {
   }
 
   @graphql.Mutation(() => Order)
+  async createOrder(@graphql.Args() args: CreateOrderArgs): Promise<Order> {
+    return await this.service.createOrder({
+      ...args,
+      data: args.data,
+    });
+  }
+
+  @graphql.Mutation(() => Order)
+  async updateOrder(
+    @graphql.Args() args: UpdateOrderArgs
+  ): Promise<Order | null> {
+    try {
+      return await this.service.updateOrder({
+        ...args,
+        data: args.data,
+      });
+    } catch (error) {
+      if (isRecordNotFoundError(error)) {
+        throw new GraphQLError(
+          `No resource was found for ${JSON.stringify(args.where)}`
+        );
+      }
+      throw error;
+    }
+  }
+
+  @graphql.Mutation(() => Order)
   async deleteOrder(
     @graphql.Args() args: DeleteOrderArgs
   ): Promise<Order | null> {
@@ -62,5 +93,19 @@ export class OrderResolverBase {
       }
       throw error;
     }
+  }
+
+  @graphql.ResolveField(() => [Product], { name: "products" })
+  async findProducts(
+    @graphql.Parent() parent: Order,
+    @graphql.Args() args: ProductFindManyArgs
+  ): Promise<Product[]> {
+    const results = await this.service.findProducts(parent.id, args);
+
+    if (!results) {
+      return [];
+    }
+
+    return results;
   }
 }

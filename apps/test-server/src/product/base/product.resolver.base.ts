@@ -17,7 +17,10 @@ import { Product } from "./Product";
 import { ProductCountArgs } from "./ProductCountArgs";
 import { ProductFindManyArgs } from "./ProductFindManyArgs";
 import { ProductFindUniqueArgs } from "./ProductFindUniqueArgs";
+import { CreateProductArgs } from "./CreateProductArgs";
+import { UpdateProductArgs } from "./UpdateProductArgs";
 import { DeleteProductArgs } from "./DeleteProductArgs";
+import { Order } from "../../order/base/Order";
 import { ProductService } from "../product.service";
 @graphql.Resolver(() => Product)
 export class ProductResolverBase {
@@ -51,6 +54,51 @@ export class ProductResolverBase {
   }
 
   @graphql.Mutation(() => Product)
+  async createProduct(
+    @graphql.Args() args: CreateProductArgs
+  ): Promise<Product> {
+    return await this.service.createProduct({
+      ...args,
+      data: {
+        ...args.data,
+
+        order: args.data.order
+          ? {
+              connect: args.data.order,
+            }
+          : undefined,
+      },
+    });
+  }
+
+  @graphql.Mutation(() => Product)
+  async updateProduct(
+    @graphql.Args() args: UpdateProductArgs
+  ): Promise<Product | null> {
+    try {
+      return await this.service.updateProduct({
+        ...args,
+        data: {
+          ...args.data,
+
+          order: args.data.order
+            ? {
+                connect: args.data.order,
+              }
+            : undefined,
+        },
+      });
+    } catch (error) {
+      if (isRecordNotFoundError(error)) {
+        throw new GraphQLError(
+          `No resource was found for ${JSON.stringify(args.where)}`
+        );
+      }
+      throw error;
+    }
+  }
+
+  @graphql.Mutation(() => Product)
   async deleteProduct(
     @graphql.Args() args: DeleteProductArgs
   ): Promise<Product | null> {
@@ -64,5 +112,18 @@ export class ProductResolverBase {
       }
       throw error;
     }
+  }
+
+  @graphql.ResolveField(() => Order, {
+    nullable: true,
+    name: "order",
+  })
+  async getOrder(@graphql.Parent() parent: Product): Promise<Order | null> {
+    const result = await this.service.getOrder(parent.id);
+
+    if (!result) {
+      return null;
+    }
+    return result;
   }
 }

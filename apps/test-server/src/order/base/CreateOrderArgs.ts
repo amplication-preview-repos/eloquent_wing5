@@ -9,25 +9,22 @@ https://docs.amplication.com/how-to/custom-code
 
 ------------------------------------------------------------------------------
   */
-import { InputType, Field } from "@nestjs/graphql";
+import { ArgsType, Field } from "@nestjs/graphql";
 import { ApiProperty } from "@nestjs/swagger";
-import { OrderWhereUniqueInput } from "../../order/base/OrderWhereUniqueInput";
-import { ValidateNested, IsOptional } from "class-validator";
+import { OrderCreateInput } from "./OrderCreateInput";
+import { ValidateNested } from "class-validator";
 import { Type } from "class-transformer";
 
-@InputType()
-class ProductCreateInput {
+@ArgsType()
+class CreateOrderArgs {
   @ApiProperty({
-    required: false,
-    type: () => OrderWhereUniqueInput,
+    required: true,
+    type: () => OrderCreateInput,
   })
   @ValidateNested()
-  @Type(() => OrderWhereUniqueInput)
-  @IsOptional()
-  @Field(() => OrderWhereUniqueInput, {
-    nullable: true,
-  })
-  order?: OrderWhereUniqueInput | null;
+  @Type(() => OrderCreateInput)
+  @Field(() => OrderCreateInput, { nullable: false })
+  data!: OrderCreateInput;
 }
 
-export { ProductCreateInput as ProductCreateInput };
+export { CreateOrderArgs as CreateOrderArgs };
