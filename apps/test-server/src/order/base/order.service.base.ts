@@ -14,6 +14,7 @@ import {
   Prisma,
   Order as PrismaOrder,
   Product as PrismaProduct,
+  User as PrismaUser,
 } from "@prisma/client";
 
 export class OrderServiceBase {
@@ -48,5 +49,16 @@ export class OrderServiceBase {
         where: { id: parentId },
       })
       .products(args);
+  }
+
+  async findUsers(
+    parentId: string,
+    args: Prisma.UserFindManyArgs
+  ): Promise<PrismaUser[]> {
+    return this.prisma.order
+      .findUniqueOrThrow({
+        where: { id: parentId },
+      })
+      .users(args);
   }
 }

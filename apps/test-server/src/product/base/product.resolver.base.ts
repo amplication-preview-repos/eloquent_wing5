@@ -20,6 +20,8 @@ import { ProductFindUniqueArgs } from "./ProductFindUniqueArgs";
 import { CreateProductArgs } from "./CreateProductArgs";
 import { UpdateProductArgs } from "./UpdateProductArgs";
 import { DeleteProductArgs } from "./DeleteProductArgs";
+import { UserFindManyArgs } from "../../user/base/UserFindManyArgs";
+import { User } from "../../user/base/User";
 import { Order } from "../../order/base/Order";
 import { ProductService } from "../product.service";
 @graphql.Resolver(() => Product)
@@ -112,6 +114,20 @@ export class ProductResolverBase {
       }
       throw error;
     }
+  }
+
+  @graphql.ResolveField(() => [User], { name: "users" })
+  async findUsers(
+    @graphql.Parent() parent: Product,
+    @graphql.Args() args: UserFindManyArgs
+  ): Promise<User[]> {
+    const results = await this.service.findUsers(parent.id, args);
+
+    if (!results) {
+      return [];
+    }
+
+    return results;
   }
 
   @graphql.ResolveField(() => Order, {

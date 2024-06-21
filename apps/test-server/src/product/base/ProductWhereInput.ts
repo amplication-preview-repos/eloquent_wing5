@@ -15,6 +15,7 @@ import { StringFilter } from "../../util/StringFilter";
 import { Type } from "class-transformer";
 import { IsOptional, ValidateNested } from "class-validator";
 import { OrderWhereUniqueInput } from "../../order/base/OrderWhereUniqueInput";
+import { UserListRelationFilter } from "../../user/base/UserListRelationFilter";
 
 @InputType()
 class ProductWhereInput {
@@ -40,6 +41,18 @@ class ProductWhereInput {
     nullable: true,
   })
   order?: OrderWhereUniqueInput;
+
+  @ApiProperty({
+    required: false,
+    type: () => UserListRelationFilter,
+  })
+  @ValidateNested()
+  @Type(() => UserListRelationFilter)
+  @IsOptional()
+  @Field(() => UserListRelationFilter, {
+    nullable: true,
+  })
+  users?: UserListRelationFilter;
 }
 
 export { ProductWhereInput as ProductWhereInput };
