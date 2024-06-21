@@ -64,7 +64,7 @@ class UserUpdateInput {
   @Field(() => OrderUpdateManyWithoutUsersInput, {
     nullable: true,
   })
-  order?: OrderUpdateManyWithoutUsersInput;
+  orders?: OrderUpdateManyWithoutUsersInput;
 
   @ApiProperty({
     required: false,
@@ -87,7 +87,7 @@ class UserUpdateInput {
   @Field(() => ProductUpdateManyWithoutUsersInput, {
     nullable: true,
   })
-  product?: ProductUpdateManyWithoutUsersInput;
+  products?: ProductUpdateManyWithoutUsersInput;
 
   @ApiProperty({
     required: false,

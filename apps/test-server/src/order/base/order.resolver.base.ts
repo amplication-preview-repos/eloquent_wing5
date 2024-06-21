@@ -20,9 +20,6 @@ import { OrderFindUniqueArgs } from "./OrderFindUniqueArgs";
 import { CreateOrderArgs } from "./CreateOrderArgs";
 import { UpdateOrderArgs } from "./UpdateOrderArgs";
 import { DeleteOrderArgs } from "./DeleteOrderArgs";
-import { ProductFindManyArgs } from "../../product/base/ProductFindManyArgs";
-import { Product } from "../../product/base/Product";
-import { UserFindManyArgs } from "../../user/base/UserFindManyArgs";
 import { User } from "../../user/base/User";
 import { OrderService } from "../order.service";
 @graphql.Resolver(() => Order)
@@ -58,7 +55,15 @@ export class OrderResolverBase {
   async createOrder(@graphql.Args() args: CreateOrderArgs): Promise<Order> {
     return await this.service.createOrder({
       ...args,
-      data: args.data,
+      data: {
+        ...args.data,
+
+        user: args.data.user
+          ? {
+              connect: args.data.user,
+            }
+          : undefined,
+      },
     });
   }
 
@@ -69,7 +74,15 @@ export class OrderResolverBase {
     try {
       return await this.service.updateOrder({
         ...args,
-        data: args.data,
+        data: {
+          ...args.data,
+
+          user: args.data.user
+            ? {
+                connect: args.data.user,
+              }
+            : undefined,
+        },
       });
     } catch (error) {
       if (isRecordNotFoundError(error)) {
@@ -97,31 +110,16 @@ export class OrderResolverBase {
     }
   }
 
-  @graphql.ResolveField(() => [Product], { name: "products" })
-  async findProducts(
-    @graphql.Parent() parent: Order,
-    @graphql.Args() args: ProductFindManyArgs
-  ): Promise<Product[]> {
-    const results = await this.service.findProducts(parent.id, args);
+  @graphql.ResolveField(() => User, {
+    nullable: true,
+    name: "user",
+  })
+  async getUser(@graphql.Parent() parent: Order): Promise<User | null> {
+    const result = await this.service.getUser(parent.id);
 
-    if (!results) {
-      return [];
+    if (!result) {
+      return null;
     }
-
-    return results;
-  }
-
-  @graphql.ResolveField(() => [User], { name: "users" })
-  async findUsers(
-    @graphql.Parent() parent: Order,
-    @graphql.Args() args: UserFindManyArgs
-  ): Promise<User[]> {
-    const results = await this.service.findUsers(parent.id, args);
-
-    if (!results) {
-      return [];
-    }
-
-    return results;
+    return result;
   }
 }

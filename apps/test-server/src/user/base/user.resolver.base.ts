@@ -91,12 +91,12 @@ export class UserResolverBase {
     }
   }
 
-  @graphql.ResolveField(() => [Order], { name: "order" })
-  async findOrder(
+  @graphql.ResolveField(() => [Order], { name: "orders" })
+  async findOrders(
     @graphql.Parent() parent: User,
     @graphql.Args() args: OrderFindManyArgs
   ): Promise<Order[]> {
-    const results = await this.service.findOrder(parent.id, args);
+    const results = await this.service.findOrders(parent.id, args);
 
     if (!results) {
       return [];
@@ -105,12 +105,12 @@ export class UserResolverBase {
     return results;
   }
 
-  @graphql.ResolveField(() => [Product], { name: "product" })
-  async findProduct(
+  @graphql.ResolveField(() => [Product], { name: "products" })
+  async findProducts(
     @graphql.Parent() parent: User,
     @graphql.Args() args: ProductFindManyArgs
   ): Promise<Product[]> {
-    const results = await this.service.findProduct(parent.id, args);
+    const results = await this.service.findProducts(parent.id, args);
 
     if (!results) {
       return [];

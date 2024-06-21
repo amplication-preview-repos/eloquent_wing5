@@ -8,7 +8,7 @@ export type UserWhereInput = {
   firstName?: StringNullableFilter;
   id?: StringFilter;
   lastName?: StringNullableFilter;
-  order?: OrderListRelationFilter;
-  product?: ProductListRelationFilter;
+  orders?: OrderListRelationFilter;
+  products?: ProductListRelationFilter;
   username?: StringFilter;
 };

@@ -74,7 +74,7 @@ class UserWhereInput {
   @Field(() => OrderListRelationFilter, {
     nullable: true,
   })
-  order?: OrderListRelationFilter;
+  orders?: OrderListRelationFilter;
 
   @ApiProperty({
     required: false,
@@ -86,7 +86,7 @@ class UserWhereInput {
   @Field(() => ProductListRelationFilter, {
     nullable: true,
   })
-  product?: ProductListRelationFilter;
+  products?: ProductListRelationFilter;
 
   @ApiProperty({
     required: false,

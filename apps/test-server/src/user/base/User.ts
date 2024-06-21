@@ -77,7 +77,7 @@ class User {
   @ValidateNested()
   @Type(() => Order)
   @IsOptional()
-  order?: Array<Order>;
+  orders?: Array<Order>;
 
   @ApiProperty({
     required: false,
@@ -86,7 +86,7 @@ class User {
   @ValidateNested()
   @Type(() => Product)
   @IsOptional()
-  product?: Array<Product>;
+  products?: Array<Product>;
 
   @ApiProperty({
     required: true,

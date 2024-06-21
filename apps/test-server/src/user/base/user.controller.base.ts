@@ -158,19 +158,25 @@ export class UserControllerBase {
     }
   }
 
-  @common.Get("/:id/order")
+  @common.Get("/:id/orders")
   @ApiNestedQuery(OrderFindManyArgs)
-  async findOrder(
+  async findOrders(
     @common.Req() request: Request,
     @common.Param() params: UserWhereUniqueInput
   ): Promise<Order[]> {
     const query = plainToClass(OrderFindManyArgs, request.query);
-    const results = await this.service.findOrder(params.id, {
+    const results = await this.service.findOrders(params.id, {
       ...query,
       select: {
         createdAt: true,
         id: true,
         updatedAt: true,
+
+        user: {
+          select: {
+            id: true,
+          },
+        },
       },
     });
     if (results === null) {
@@ -181,13 +187,13 @@ export class UserControllerBase {
     return results;
   }
 
-  @common.Post("/:id/order")
-  async connectOrder(
+  @common.Post("/:id/orders")
+  async connectOrders(
     @common.Param() params: UserWhereUniqueInput,
     @common.Body() body: OrderWhereUniqueInput[]
   ): Promise<void> {
     const data = {
-      order: {
+      orders: {
         connect: body,
       },
     };
@@ -198,13 +204,13 @@ export class UserControllerBase {
     });
   }
 
-  @common.Patch("/:id/order")
-  async updateOrder(
+  @common.Patch("/:id/orders")
+  async updateOrders(
     @common.Param() params: UserWhereUniqueInput,
     @common.Body() body: OrderWhereUniqueInput[]
   ): Promise<void> {
     const data = {
-      order: {
+      orders: {
         set: body,
       },
     };
@@ -215,13 +221,13 @@ export class UserControllerBase {
     });
   }
 
-  @common.Delete("/:id/order")
-  async disconnectOrder(
+  @common.Delete("/:id/orders")
+  async disconnectOrders(
     @common.Param() params: UserWhereUniqueInput,
     @common.Body() body: OrderWhereUniqueInput[]
   ): Promise<void> {
     const data = {
-      order: {
+      orders: {
         disconnect: body,
       },
     };
@@ -232,26 +238,25 @@ export class UserControllerBase {
     });
   }
 
-  @common.Get("/:id/product")
+  @common.Get("/:id/products")
   @ApiNestedQuery(ProductFindManyArgs)
-  async findProduct(
+  async findProducts(
     @common.Req() request: Request,
     @common.Param() params: UserWhereUniqueInput
   ): Promise<Product[]> {
     const query = plainToClass(ProductFindManyArgs, request.query);
-    const results = await this.service.findProduct(params.id, {
+    const results = await this.service.findProducts(params.id, {
       ...query,
       select: {
         createdAt: true,
         id: true,
+        updatedAt: true,
 
-        order: {
+        user: {
           select: {
             id: true,
           },
         },
-
-        updatedAt: true,
       },
     });
     if (results === null) {
@@ -262,13 +267,13 @@ export class UserControllerBase {
     return results;
   }
 
-  @common.Post("/:id/product")
-  async connectProduct(
+  @common.Post("/:id/products")
+  async connectProducts(
     @common.Param() params: UserWhereUniqueInput,
     @common.Body() body: ProductWhereUniqueInput[]
   ): Promise<void> {
     const data = {
-      product: {
+      products: {
         connect: body,
       },
     };
@@ -279,13 +284,13 @@ export class UserControllerBase {
     });
   }
 
-  @common.Patch("/:id/product")
-  async updateProduct(
+  @common.Patch("/:id/products")
+  async updateProducts(
     @common.Param() params: UserWhereUniqueInput,
     @common.Body() body: ProductWhereUniqueInput[]
   ): Promise<void> {
     const data = {
-      product: {
+      products: {
         set: body,
       },
     };
@@ -296,13 +301,13 @@ export class UserControllerBase {
     });
   }
 
-  @common.Delete("/:id/product")
-  async disconnectProduct(
+  @common.Delete("/:id/products")
+  async disconnectProducts(
     @common.Param() params: UserWhereUniqueInput,
     @common.Body() body: ProductWhereUniqueInput[]
   ): Promise<void> {
     const data = {
-      product: {
+      products: {
         disconnect: body,
       },
     };

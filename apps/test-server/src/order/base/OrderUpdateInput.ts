@@ -11,36 +11,23 @@ https://docs.amplication.com/how-to/custom-code
   */
 import { InputType, Field } from "@nestjs/graphql";
 import { ApiProperty } from "@nestjs/swagger";
-import { ProductUpdateManyWithoutOrdersInput } from "./ProductUpdateManyWithoutOrdersInput";
+import { UserWhereUniqueInput } from "../../user/base/UserWhereUniqueInput";
 import { ValidateNested, IsOptional } from "class-validator";
 import { Type } from "class-transformer";
-import { UserUpdateManyWithoutOrdersInput } from "./UserUpdateManyWithoutOrdersInput";
 
 @InputType()
 class OrderUpdateInput {
   @ApiProperty({
     required: false,
-    type: () => ProductUpdateManyWithoutOrdersInput,
+    type: () => UserWhereUniqueInput,
   })
   @ValidateNested()
-  @Type(() => ProductUpdateManyWithoutOrdersInput)
+  @Type(() => UserWhereUniqueInput)
   @IsOptional()
-  @Field(() => ProductUpdateManyWithoutOrdersInput, {
+  @Field(() => UserWhereUniqueInput, {
     nullable: true,
   })
-  products?: ProductUpdateManyWithoutOrdersInput;
-
-  @ApiProperty({
-    required: false,
-    type: () => UserUpdateManyWithoutOrdersInput,
-  })
-  @ValidateNested()
-  @Type(() => UserUpdateManyWithoutOrdersInput)
-  @IsOptional()
-  @Field(() => UserUpdateManyWithoutOrdersInput, {
-    nullable: true,
-  })
-  users?: UserUpdateManyWithoutOrdersInput;
+  user?: UserWhereUniqueInput | null;
 }
 
 export { OrderUpdateInput as OrderUpdateInput };

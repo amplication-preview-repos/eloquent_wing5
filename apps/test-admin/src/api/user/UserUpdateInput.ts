@@ -6,9 +6,9 @@ export type UserUpdateInput = {
   email?: string | null;
   firstName?: string | null;
   lastName?: string | null;
-  order?: OrderUpdateManyWithoutUsersInput;
+  orders?: OrderUpdateManyWithoutUsersInput;
   password?: string;
-  product?: ProductUpdateManyWithoutUsersInput;
+  products?: ProductUpdateManyWithoutUsersInput;
   roles?: InputJsonValue;
   username?: string;
 };

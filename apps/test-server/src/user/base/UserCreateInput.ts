@@ -64,7 +64,7 @@ class UserCreateInput {
   @Field(() => OrderCreateNestedManyWithoutUsersInput, {
     nullable: true,
   })
-  order?: OrderCreateNestedManyWithoutUsersInput;
+  orders?: OrderCreateNestedManyWithoutUsersInput;
 
   @ApiProperty({
     required: true,
@@ -84,7 +84,7 @@ class UserCreateInput {
   @Field(() => ProductCreateNestedManyWithoutUsersInput, {
     nullable: true,
   })
-  product?: ProductCreateNestedManyWithoutUsersInput;
+  products?: ProductCreateNestedManyWithoutUsersInput;
 
   @ApiProperty({
     required: true,

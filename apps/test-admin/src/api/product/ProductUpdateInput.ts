@@ -1,7 +1,5 @@
-import { OrderWhereUniqueInput } from "../order/OrderWhereUniqueInput";
-import { UserUpdateManyWithoutProductsInput } from "./UserUpdateManyWithoutProductsInput";
+import { UserWhereUniqueInput } from "../user/UserWhereUniqueInput";
 
 export type ProductUpdateInput = {
-  order?: OrderWhereUniqueInput | null;
-  users?: UserUpdateManyWithoutProductsInput;
+  user?: UserWhereUniqueInput | null;
 };

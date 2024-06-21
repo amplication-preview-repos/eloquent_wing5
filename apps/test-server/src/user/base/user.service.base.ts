@@ -40,7 +40,7 @@ export class UserServiceBase {
     return this.prisma.user.delete(args);
   }
 
-  async findOrder(
+  async findOrders(
     parentId: string,
     args: Prisma.OrderFindManyArgs
   ): Promise<PrismaOrder[]> {
@@ -48,10 +48,10 @@ export class UserServiceBase {
       .findUniqueOrThrow({
         where: { id: parentId },
       })
-      .order(args);
+      .orders(args);
   }
 
-  async findProduct(
+  async findProducts(
     parentId: string,
     args: Prisma.ProductFindManyArgs
   ): Promise<PrismaProduct[]> {
@@ -59,7 +59,7 @@ export class UserServiceBase {
       .findUniqueOrThrow({
         where: { id: parentId },
       })
-      .product(args);
+      .products(args);
   }
   async Dca(args: string): Promise<string> {
     throw new Error("Not implemented");

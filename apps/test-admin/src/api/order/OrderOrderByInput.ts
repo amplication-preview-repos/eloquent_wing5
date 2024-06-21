@@ -4,4 +4,5 @@ export type OrderOrderByInput = {
   createdAt?: SortOrder;
   id?: SortOrder;
   updatedAt?: SortOrder;
+  userId?: SortOrder;
 };

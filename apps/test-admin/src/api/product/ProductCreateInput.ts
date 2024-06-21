@@ -1,7 +1,5 @@
-import { OrderWhereUniqueInput } from "../order/OrderWhereUniqueInput";
-import { UserCreateNestedManyWithoutProductsInput } from "./UserCreateNestedManyWithoutProductsInput";
+import { UserWhereUniqueInput } from "../user/UserWhereUniqueInput";
 
 export type ProductCreateInput = {
-  order?: OrderWhereUniqueInput | null;
-  users?: UserCreateNestedManyWithoutProductsInput;
+  user?: UserWhereUniqueInput | null;
 };

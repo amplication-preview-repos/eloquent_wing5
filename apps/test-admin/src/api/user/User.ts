@@ -8,8 +8,8 @@ export type User = {
   firstName: string | null;
   id: string;
   lastName: string | null;
-  order?: Array<Order>;
-  product?: Array<Product>;
+  orders?: Array<Order>;
+  products?: Array<Product>;
   roles: JsonValue;
   updatedAt: Date;
   username: string;

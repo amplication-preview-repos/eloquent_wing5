@@ -22,12 +22,6 @@ import { Order } from "./Order";
 import { OrderFindManyArgs } from "./OrderFindManyArgs";
 import { OrderWhereUniqueInput } from "./OrderWhereUniqueInput";
 import { OrderUpdateInput } from "./OrderUpdateInput";
-import { ProductFindManyArgs } from "../../product/base/ProductFindManyArgs";
-import { Product } from "../../product/base/Product";
-import { ProductWhereUniqueInput } from "../../product/base/ProductWhereUniqueInput";
-import { UserFindManyArgs } from "../../user/base/UserFindManyArgs";
-import { User } from "../../user/base/User";
-import { UserWhereUniqueInput } from "../../user/base/UserWhereUniqueInput";
 
 export class OrderControllerBase {
   constructor(protected readonly service: OrderService) {}
@@ -35,11 +29,25 @@ export class OrderControllerBase {
   @swagger.ApiCreatedResponse({ type: Order })
   async createOrder(@common.Body() data: OrderCreateInput): Promise<Order> {
     return await this.service.createOrder({
-      data: data,
+      data: {
+        ...data,
+
+        user: data.user
+          ? {
+              connect: data.user,
+            }
+          : undefined,
+      },
       select: {
         createdAt: true,
         id: true,
         updatedAt: true,
+
+        user: {
+          select: {
+            id: true,
+          },
+        },
       },
     });
   }
@@ -55,6 +63,12 @@ export class OrderControllerBase {
         createdAt: true,
         id: true,
         updatedAt: true,
+
+        user: {
+          select: {
+            id: true,
+          },
+        },
       },
     });
   }
@@ -71,6 +85,12 @@ export class OrderControllerBase {
         createdAt: true,
         id: true,
         updatedAt: true,
+
+        user: {
+          select: {
+            id: true,
+          },
+        },
       },
     });
     if (result === null) {
@@ -91,11 +111,25 @@ export class OrderControllerBase {
     try {
       return await this.service.updateOrder({
         where: params,
-        data: data,
+        data: {
+          ...data,
+
+          user: data.user
+            ? {
+                connect: data.user,
+              }
+            : undefined,
+        },
         select: {
           createdAt: true,
           id: true,
           updatedAt: true,
+
+          user: {
+            select: {
+              id: true,
+            },
+          },
         },
       });
     } catch (error) {
@@ -121,6 +155,12 @@ export class OrderControllerBase {
           createdAt: true,
           id: true,
           updatedAt: true,
+
+          user: {
+            select: {
+              id: true,
+            },
+          },
         },
       });
     } catch (error) {
@@ -131,165 +171,5 @@ export class OrderControllerBase {
       }
       throw error;
     }
-  }
-
-  @common.Get("/:id/products")
-  @ApiNestedQuery(ProductFindManyArgs)
-  async findProducts(
-    @common.Req() request: Request,
-    @common.Param() params: OrderWhereUniqueInput
-  ): Promise<Product[]> {
-    const query = plainToClass(ProductFindManyArgs, request.query);
-    const results = await this.service.findProducts(params.id, {
-      ...query,
-      select: {
-        createdAt: true,
-        id: true,
-
-        order: {
-          select: {
-            id: true,
-          },
-        },
-
-        updatedAt: true,
-      },
-    });
-    if (results === null) {
-      throw new errors.NotFoundException(
-        `No resource was found for ${JSON.stringify(params)}`
-      );
-    }
-    return results;
-  }
-
-  @common.Post("/:id/products")
-  async connectProducts(
-    @common.Param() params: OrderWhereUniqueInput,
-    @common.Body() body: ProductWhereUniqueInput[]
-  ): Promise<void> {
-    const data = {
-      products: {
-        connect: body,
-      },
-    };
-    await this.service.updateOrder({
-      where: params,
-      data,
-      select: { id: true },
-    });
-  }
-
-  @common.Patch("/:id/products")
-  async updateProducts(
-    @common.Param() params: OrderWhereUniqueInput,
-    @common.Body() body: ProductWhereUniqueInput[]
-  ): Promise<void> {
-    const data = {
-      products: {
-        set: body,
-      },
-    };
-    await this.service.updateOrder({
-      where: params,
-      data,
-      select: { id: true },
-    });
-  }
-
-  @common.Delete("/:id/products")
-  async disconnectProducts(
-    @common.Param() params: OrderWhereUniqueInput,
-    @common.Body() body: ProductWhereUniqueInput[]
-  ): Promise<void> {
-    const data = {
-      products: {
-        disconnect: body,
-      },
-    };
-    await this.service.updateOrder({
-      where: params,
-      data,
-      select: { id: true },
-    });
-  }
-
-  @common.Get("/:id/users")
-  @ApiNestedQuery(UserFindManyArgs)
-  async findUsers(
-    @common.Req() request: Request,
-    @common.Param() params: OrderWhereUniqueInput
-  ): Promise<User[]> {
-    const query = plainToClass(UserFindManyArgs, request.query);
-    const results = await this.service.findUsers(params.id, {
-      ...query,
-      select: {
-        createdAt: true,
-        email: true,
-        firstName: true,
-        id: true,
-        lastName: true,
-        roles: true,
-        updatedAt: true,
-        username: true,
-      },
-    });
-    if (results === null) {
-      throw new errors.NotFoundException(
-        `No resource was found for ${JSON.stringify(params)}`
-      );
-    }
-    return results;
-  }
-
-  @common.Post("/:id/users")
-  async connectUsers(
-    @common.Param() params: OrderWhereUniqueInput,
-    @common.Body() body: UserWhereUniqueInput[]
-  ): Promise<void> {
-    const data = {
-      users: {
-        connect: body,
-      },
-    };
-    await this.service.updateOrder({
-      where: params,
-      data,
-      select: { id: true },
-    });
-  }
-
-  @common.Patch("/:id/users")
-  async updateUsers(
-    @common.Param() params: OrderWhereUniqueInput,
-    @common.Body() body: UserWhereUniqueInput[]
-  ): Promise<void> {
-    const data = {
-      users: {
-        set: body,
-      },
-    };
-    await this.service.updateOrder({
-      where: params,
-      data,
-      select: { id: true },
-    });
-  }
-
-  @common.Delete("/:id/users")
-  async disconnectUsers(
-    @common.Param() params: OrderWhereUniqueInput,
-    @common.Body() body: UserWhereUniqueInput[]
-  ): Promise<void> {
-    const data = {
-      users: {
-        disconnect: body,
-      },
-    };
-    await this.service.updateOrder({
-      where: params,
-      data,
-      select: { id: true },
-    });
   }
 }

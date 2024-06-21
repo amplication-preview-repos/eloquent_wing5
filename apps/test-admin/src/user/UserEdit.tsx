@@ -22,7 +22,7 @@ export const UserEdit = (props: EditProps): React.ReactElement => {
         <TextInput label="First Name" source="firstName" />
         <TextInput label="Last Name" source="lastName" />
         <ReferenceArrayInput
-          source="order"
+          source="orders"
           reference="Order"
           parse={(value: any) => value && value.map((v: any) => ({ id: v }))}
           format={(value: any) => value && value.map((v: any) => v.id)}
@@ -31,7 +31,7 @@ export const UserEdit = (props: EditProps): React.ReactElement => {
         </ReferenceArrayInput>
         <PasswordInput label="Password" source="password" />
         <ReferenceArrayInput
-          source="product"
+          source="products"
           reference="Product"
           parse={(value: any) => value && value.map((v: any) => ({ id: v }))}
           format={(value: any) => value && value.map((v: any) => v.id)}
